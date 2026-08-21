@@ -1,0 +1,38 @@
+= pythonesque
+:toc:
+
+An offline, seed-deterministic generator of absurdist institutional titles.
+
+== Installation
+
+[source,console]
+----
+pip install pythonesque
+----
+
+== Usage
+
+[source,python]
+----
+from pythonesque import UnifiedFoundationalGenerator
+
+generator = UnifiedFoundationalGenerator(seed="The Larch")
+print(generator.generate())
+print(generator.generate(slugify=True))
+----
+
+The package is organized with a standard `src/` layout. The original design
+specification is retained in link:docs/pythonesque-spec.txt[docs/].
+
+== Development
+
+Install the `test` dependency group with your preferred Python package tool,
+then run:
+
+[source,console]
+----
+python3 -m pytest
+----
+
+See link:CONTRIBUTING.adoc[CONTRIBUTING.adoc] for contribution guidance and
+link:AGENTS.adoc[AGENTS.adoc] for repository automation instructions.

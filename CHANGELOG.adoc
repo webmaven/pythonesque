@@ -1,0 +1,16 @@
+= Changelog
+
+All notable changes to this project are documented here.
+
+== Unreleased
+
+=== Changed
+
+* Adopted Hatchling for PEP 517 builds.
+* Standardized repository documentation and contribution guidance.
+
+== 0.1.0b1 - 2026-08-20
+
+=== Added
+
+* Seed-deterministic absurdist title generator.

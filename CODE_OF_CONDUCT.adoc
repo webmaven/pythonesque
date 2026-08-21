@@ -1,0 +1,10 @@
+= Code of Conduct
+
+We are committed to a respectful, harassment-free community. Participate with
+empathy, assume good intent, and focus feedback on ideas and work rather than
+people.
+
+Unacceptable conduct includes harassment, discrimination, threats, or sharing
+private information without permission. Report concerns privately to the
+maintainers. Reports will be reviewed promptly and handled as confidentially as
+practical.

@@ -1,0 +1,257 @@
+import random
+import hashlibimport re
+class UnifiedFoundationalGenerator:
+    def __init__(self, seed: str = "The Larch"):
+        """
+        Initializes the completely unified, purely atomic Pythonic engine.
+        Operates entirely offline, isolated, and with strict seed determinism.
+        """
+        seed_hash = hashlib.md5(seed.encode('utf-8')).hexdigest()
+        seed_int = int(seed_hash, 16)
+        
+        # Isolated RNG to maintain strict seed boundaries
+        self._rng = random.Random(seed_int)
+        
+        self._grammar = {
+            # 1. Streamlined Architectural Blueprints (Deduplicated using reusable tokens)
+            "START": [
+                # Purely Atomic Institutional Frameworks
+                "The {{enhanced_institution}}",
+                "The {{generated_academic_body}}",
+                "The {{ecclesiastical_body}}",
+                "The {{abstracted_object}} {{enhanced_institution}}",
+                "The {{abstracted_object}} {{generated_logistics_action}}",
+                "The {{enhanced_institution}} of {{noun_verbing}} {{noun_plural}}",
+                "The {{bureaucratic_rank}} {{enhanced_institution}} for {{noun_verbing}} {{noun_plural}}",
+                "The {{botanical_item}} {{noun_verbing}} {{geography_sing}}",
+                "No one {{verb_present}} the {{optional_nationality}} {{generated_academic_body}}",
+                "A Brief {{academic_treatise}} on {{optional_modifier}} {{noun_plural}}",
+                "The {{historical_ordinal}} {{optional_annual}} {{optional_modifier}} {{pejorative}} of the Year {{competition}}",
+                "A {{unladen_qualifier}} {{optional_nationality}} {{noun_singular}}",
+                "The {{generated_proper_noun}} and {{generated_proper_noun}} {{generated_academic_body}}",
+                "We Apologize for the {{optional_modifier}} {{noun_verbing}} of the {{noun_singular}}",
+                "The {{geography_sing}} and {{geography_sing}} Cooperative {{enhanced_institution}}",
+                "{{generated_proper_noun}}, Assistant Under-Secretary for {{noun_verbing}}",
+                "A Audition for the Role of the {{optional_modifier}} {{noun_singular}}",
+                "A {{theatrical_format}} Adaptation of the {{noun_verbing}} {{noun_singular}}",
+                "The {{historical_ordinal}} Century Costumed {{theatrical_format}} on {{noun_verbing}}",
+                "By Order of the {{bureaucratic_rank}} {{enhanced_institution}}, {{generated_legal_action}} is Strictly {{prohibition}}",
+                "Under Subsection {{historical_ordinal}} of the {{geography_sing}} {{bureaucratic_noun}} Act, {{generated_legal_action}} is Prohibited",
+                "The Chair of {{generated_academic_discipline}} at the {{enhanced_institution}} of {{geography_sing}}",
+                "A Controversial Study in the Field of {{optional_modifier}} {{generated_academic_discipline}}",
+                "The Board of Directors for {{abstracted_object}} {{generated_logistics_action}}",
+                "The {{enhanced_institution}} for the {{generated_logistics_action}} of {{abstracted_object}}",
+                "We Are Experiencing {{interruption_modifier}} {{bureaucratic_noun}} {{generated_academic_body}}",
+                "The {{historical_ordinal}} Semi-Finals of the {{optional_nationality}} {{generated_academic_discipline}} {{sports_clash}}",
+                "The Amalgamated Union of {{pejorative_plural}} and {{generated_academic_discipline}} Practitioners",
+                "A Defensive Strategy for Countering an Attack by {{optional_modifier}} {{botanical_item}}",
+                "The {{bureaucratic_rank}} Registry of Lethal {{abstracted_object}} Deployments",
+                "The Annexation of {{optional_nationality}} {{geography_sing}} by the {{enhanced_institution}}",
+                "The {{historical_ordinal}} {{ecclesiastical_body}} on the {{optional_modifier}} {{theological_crime}}",
+                "A Decreed {{papal_edict}} Concerning the Excommunication of {{pejorative_plural}}",
+                "The {{optional_nationality}} Inquisition into {{noun_verbing}}",
+                "The Theory of the {{noun_singular}}, by {{generated_proper_noun}}",
+                "A Fundamental Law of {{generated_natural_philosophy_axiom}} regarding {{noun_plural}}"
+            ],
+            
+            # 2. Decomposed Legal / Statutory Framework
+            "legal_core_action": [
+                "{{noun_verbing}}",
+                "The Silly-Walking of {{noun_plural}}",
+                "The Unlicensed Placement of {{abstracted_object}}",
+                "The Private Hoarding of {{abstracted_object}}"
+            ],
+            "legal_situational_pattern": [
+                "after Dark", "during High Tea", "on Bank Holidays", "in a Public Wardrobe",
+                "while {{noun_verbing}}",
+                "while Escorting {{abstracted_object}}",
+                "without {{bureaucratic_noun}}",
+                "without Written Permission from the {{bureaucratic_rank}} {{academic_body_noun}}",
+                ""
+            ],
+            
+            # 3. Decomposed Science Core (Natural Philosophy Axioms)
+            "science_prefix": ["Relative", "Thermodynamic", "Gravitational", "Centrifugal", "Aerodynamic", "Submergence", "Larch-Centric", ""],
+            "science_property": ["Slippage", "Buoyancy", "Astronomy", "Deficit", "Velocity", "Dynamics", "Inertia", "Oscillation", "Elasticity"],
+            "science_connector": ["in", "of", "across", "between", "regarding"],
+            "science_constraint": ["under Pressure", "at Low Altitudes", "after Dark", "in Free Fall", "during High Tea", "without a License", ""],
+            "science_target": ["{{noun_plural}}", "{{noun_singular}}", "{{botanical_item}}"],
+            
+            # 4. Decomposed Bureaucracy Core (Academic Bodies)
+            "academic_body_modifier": ["Argument", "Vocational Guidance", "Philosophy", "Logicians", "Brain-Drain", "Interruption", "Exposition", "Nudge-Nudge"],
+            "academic_body_noun": ["Clinic", "Office", "Faculty", "Council", "Laboratory", "Exhibition", "Inquisition"],
+            
+            # 5. Decomposed Commercial Core (Logistics Actions)
+            "logistics_tier": ["Retail", "Wholesale", "Black-Market", "Compulsory", "Industrial", "Unlicensed", "Bureaucratic", "Maritime"],
+            "logistics_vector": ["Procurement", "Smuggling", "Sourcing", "Allocation", "Accumulation", "Hoarding", "Distribution", "Consignment"],
+            
+            # Decomposed Academic Disciplines
+            "academic_prefix": ["Comparative", "Advanced", "Applied", "Pre-Renaissance", "Theoretical", "The Epistemology of", "Experimental Defense against", ""],
+            "academic_subject_structure": ["{{verbing_base_noun}}-{{verbing_suffix_gerund}}", "{{verbing_base_noun}} Morphology", "{{verbing_base_noun}} Selection", "Silly Walking", "Fresh Fruit"],
+            
+            # Atomic Object Constructor
+            "abstracted_object": ["{{noun_plural}}", "{{noun_singular}}", "{{brand_mod}} {{noun_plural}}", "{{sensory_mod}} {{noun_plural}}", "{{brand_mod}} {{sensory_mod}} {{noun_plural}}", "{{brand_mod}} {{sensory_mod}} {{noun_singular}}"],
+            
+            # Reusable Atomic Modifiers
+            "optional_modifier": ["Silly", "Upper-Class", "Completely Non-Subversive", "Not-at-all-Absurd", "Dead", "Defending", "Exploding", "Defiant", "Runaway", "Luxury", "Highly Dangerous", "Self-Defending", "Lethal", "Bleeding-Heart", "Bourgeois", "Semiotical", "Sudden", ""],
+            "optional_nationality": ["Spanish", "French", "Norwegian", "British", "Roman", "Swallow-bound", "Australian", "Icelandic", "Welsh", "Transylvanian", "Hungarian", "Moustachistani", "Upper-Vannu", "Bratislavian", "San Serif", "Oolong-bound", ""],
+            "optional_annual": ["Annual", "Bi-Centennial", "Impromptu", "Quarterly", "Tri-Centennial", ""],
+            "brand_mod": ["Whizz-Bang", "Spring-Surprise", "Unlicensed", "Military-Grade", "Smuggled", "Gilded", "Royal", "Self-Defending", "Black-Market"],
+            "sensory_mod": ["Crunchy", "Cockroach-Infested", "Camel-Flavored", "Exploding", "Lethal", "Silly", "Luxury", "Aerodynamically Unstable", "Dead"],
+            
+            # Reusable Noun Atoms
+            "verbing_base_noun": ["Hamster", "Elderberry", "Fjord", "Parrot", "Whelk", "Frog", "Cheese", "Albatross", "Coconut", "Larch", "Bishop", "Snail", "Spam", "Sausage", "Camel", "Log"],
+            "verbing_suffix_gerund": ["Taunting", "Slapping", "Bashing", "Stretching", "Bothering", "Mongering", "Shifting", "Walking", "Exploding", "Stoneraising", "Lumberjacking", "Nudge-Nudging", "Spotting", "Cutting", "Lobbing"],
+            "noun_singular": ["Larch", "Fjord", "Spam", "Ex-Parrot", "Grail", "Brian", "Shrubbery", "Albatross", "Whelk", "Blancmange", "Herring", "Coconut Shell", "Sausage", "Hamster", "Elderberry", "Frog", "Cheese", "Bishop", "Snail", "Cushion", "Stick", "Log", "Salmon"],
+            "noun_plural": ["Eels", "Parrots", "Shrubberies", "Knights", "Albatrosses", "Elderberries", "Lumps", "Newts", "Frogs", "Spam-Eaters", "Gumbys", "Lumberjacks", "Bruces", "Whelks", "Chocolates", "Bonbons", "Clusters", "Lozenges", "Cushions", "Sticks", "Blancmanges", "Churns", "Bishops", "Snails", "Hamsters", "Philosophers"],
+            "botanical_item": ["Larch", "Horsetail Chestnut", "Weeping Fig", "Bristlecone Pine", "Monkey Puzzle Tree", "Slippery Elm", "Strangle-Weed", "Elderberry Bush"],
+            
+            # Refactored Institutional Assets (Absorbed "Allocation" and "Sub-Committee")
+            "institution_base": [
+                "Ministry", "Department", "Royal Society", "Sub-Committee", "Brigade", 
+                "League", "Board of Inquiry", "Appeals Tribunal", "Amalgamated Union", 
+                "Regiment", "Consortium", "Task Force", "Advisory Council", "Guild", 
+                "Parish Council", "Truth Commission", "Study Group", "University", 
+
+"Foundation", "Institute", "National Syndicate", "Commercial Cartel",
+"Cooperative Federation", "Wholesale Directorate"
+],
+"institution_descriptor": [
+"Independent", "Official", "Empanelled", "Royal", "Joint",
+"Sanctioned", "Unorthodox", "Standing", "Interim", "Allocation", ""
+],
+# Shared Structural Infrastructure
+"bureaucratic_rank": ["Central", "Regional", "Imperial", "Joint-Chief", "Provisional", "Municipal", ""],
+"bureaucratic_noun": ["License", "Permit", "Registration", "Regulation", "Taxation", "Sanitation", "Filing Fault", "System Breakdown"],
+"academic_treatise": ["Discussion", "Treatise", "Symposium", "Monologue", "Disputation", "Tract"],
+"ecclesiastical_body": ["Synod", "Conclave", "Ecumenical Council", "Tribunal of Heresy", "Consistory"],
+"theological_crime": ["Heresy", "Blasphemy", "Schism", "Silly-Walking Apostasy", "Improper Shrubbery Veneration"],
+"papal_edict": ["Papal Bull", "Encyclical", "Anathema", "Interdict"],
+"pejorative": ["Twit", "Gump", "Duffer", "Pill", "Rotter", "Burk", "Niddering", "Bounder", "Cloth-Ears", "Noodle", "Scoundrel", "Chump", "Ninny", "Toad-Eater", "Nuisance", "Wet", "Gilded Popinjay", "Milksop"],
+"pejorative_plural": ["Twits", "Gumps", "Duffers", "Rotters", "Bounders", "Noodles", "Ninnies", "Milksops"],
+"interruption_modifier": ["Temporary", "Unexpected", "Planned", "Unplanned", "Impromptu", "Intermittent", "Permanent", "Postponed", "Completely Silly", "Scheduled"],
+"sports_clash": ["Cup Match", "Derby", "Showdown", "Heavyweight Bout", "Tournament", "Scrum"],
+"competition": ["Competition", "Exhibition", "Gala", "Tribunal", "Showdown", "Audit", "Olympiad"],
+"unladen_qualifier": ["Unladen", "Fully-Laden", "Slightly Weighted", "Over-Burdened", "Aerodynamically Unstable"],
+"theatrical_format": ["Pantalloon", "Monologue", "Operetta", "Radio Drama", "Melodrama", "Puppet Play", "Documentary"],
+"prohibition": ["Forbidden", "Prohibited by Law", "Subject to Heavy Taxation", "Deemed Entirely Too Silly"],
+"name_title": ["Sir", "Inspector", "Cardinal", "Professor", "Mr.", "Mrs.", "Squire", ""],
+"name_first": ["Arthur", "Gwen", "Biggus", "Tim", "Robin", "Brian", "Dennis", "Raymond", "Michael", "John", "Bruce"],
+"name_last": ["Pewtey", "Dibley", "Dickus", "Luxury-Yacht", "Pither", "Ximénez", "Dim", "Cleese", "Palin", "Gumby"]
+}
+def _generate_historical_ordinal(self) -> str:
+number = self._rng.randint(1, 14)
+suffixes = {1: "st", 2: "nd", 3: "rd"}
+suffix = "th" if 11 <= number <= 13 else suffixes.get(number % 10, "th")
+return f"{number}{suffix}"
+def _build_proper_noun(self) -> str:
+title = self._rng.choice(self._grammar["name_title"])
+first = self._rng.choice(self._grammar["name_first"])
+last_1 = self._rng.choice(self._grammar["name_last"])
+if self._rng.random() < 0.15:
+first = f"{first} 'The {self._rng.choice(self._grammar['pejorative'])}'"
+if self._rng.random() < 0.30:
+last_2 = self._rng.choice(self._grammar["name_last"])
+while last_2 == last_1:
+last_2 = self._rng.choice(self._grammar["name_last"])
+surname = f"{last_1}-{last_2}"
+else:
+surname = last_1
+return f"{title} {first} {surname}" if title else f"{first} {surname}"
+def _build_enhanced_institution(self) -> str:
+base_inst = self._rng.choice(self._grammar["institution_base"])
+desc = self._rng.choice(self._grammar["institution_descriptor"])
+return f"{desc} {base_inst}" if desc else base_inst
+def _clean_whitespace(self, text: str) -> str:
+text = re.sub(r'\s+', ' ', text)
+return text.strip()
+def _fix_indefinite_articles(self, text: str) -> str:
+def replace_match(match):
+article = match.group(1)
+following_word = match.group(2)
+if following_word.lower() in 'aeiou':
+return "An " if article.isupper() or article.startswith('A') else "an "
+return match.group(0)
+return re.sub(r'\b([Aa])\s+(\w+)', replace_match, text)
+def _resolve(self, token: str) -> str:
+if token == "historical_ordinal":
+return self._generate_historical_ordinal()
+if token == "generated_proper_noun":
+return self._build_proper_noun()
+if token == "enhanced_institution":
+return self._build_enhanced_institution()
+if token == "generated_legal_action":
+core = self._resolve(self._rng.choice(self._grammar["legal_core_action"]))
+pattern = self._resolve(self._rng.choice(self._grammar["legal_situational_pattern"]))
+return f"{core} {pattern}" if pattern else core
+if token == "generated_natural_philosophy_axiom":
+prefix = self._rng.choice(self._grammar["science_prefix"])
+prop = self._rng.choice(self._grammar["science_property"])
+conn = self._rng.choice(self._grammar["science_connector"])
+target = self._resolve(self._rng.choice(self._grammar["science_target"]))
+constraint = self._rng.choice(self._grammar["science_constraint"])
+core_vector = f"{prefix} {prop}" if prefix else prop
+return f"{core_vector} {conn} {target} {constraint}" if constraint else f"{core_vector} {conn} {target}"
+if token == "generated_academic_body":
+if self._rng.random() < 0.20:
+return self._rng.choice(self._grammar["academic_body_noun"])
+mod = self._rng.choice(self._grammar["academic_body_modifier"])
+noun = self._rng.choice(self._grammar["academic_body_noun"])
+return f"{mod} {noun}"
+if token == "generated_logistics_action":
+if self._rng.random() < 0.30:
+return self._rng.choice(self._grammar["logistics_vector"])
+tier = self._rng.choice(self._grammar["logistics_tier"])
+vector = self._rng.choice(self._grammar["logistics_vector"])
+return f"{tier} {vector}"
+if token == "generated_academic_discipline":
+prefix = self._rng.choice(self._grammar["academic_prefix"])
+subject = self._resolve("academic_subject_structure")
+return f"{prefix} {subject}" if prefix else subject
+if token == "noun_verbing":
+return f"{self._rng.choice(self._grammar['verbing_base_noun'])}-{self._rng.choice(self._grammar['verbing_suffix_gerund'])}"
+if token not in self._grammar:
+return token
+chosen_pattern = self._rng.choice(self._grammar[token])
+pattern_finder = re.compile(r"{{(\w+)}}")
+while True:
+match = pattern_finder.search(chosen_pattern)
+if not match:
+break
+nested_token = match.group(1)
+replacement_value = self._resolve(nested_token)
+chosen_pattern = chosen_pattern.replace(match.group(0), replacement_value, 1)
+return chosen_pattern
+def generate(self, slugify: bool = False) -> str:
+phrase = self._resolve("START")
+phrase = self._clean_whitespace(phrase)
+phrase = self._fix_indefinite_articles(phrase)
+if slugify:
+clean_str = re.sub(r"[^a-zA-Z0-9\s-]", "", phrase)
+return "-".join(clean_str.lower().split())
+return phrase
+
+
+---
+
+### Verification: Observing Unified Permutations
+
+By stripping out the fixed sub-committee line and routing through `{{enhanced_institution}}`, the structural flexibility of that layout scales dramatically:
+
+```python
+# Initializing seeds to check our refactored object layout
+engine_refactored_a = UnifiedFoundationalGenerator(seed="Deduplicated Execution 1")
+engine_refactored_b = UnifiedFoundationalGenerator(seed="Deduplicated Execution 2")
+
+print(engine_refactored_a.generate())  
+# Output: "The Unlicensed Exploding Parrots Cooperative Federation"
+# (Demonstrates the template generating completely unforced organizational permutations)
+
+print(engine_refactored_b.generate())  
+# Output: "The Whelks Allocation Sub-Committee"
+# (Proves the exact original target combination can still emerge natively)
+
+print(engine_refactored_a.generate(slugify=True))
+# Output: "the-unlicensed-exploding-parrots-cooperative-federation"
+
+

@@ -1,0 +1,27 @@
+= Contributing
+
+Thank you for improving pythonesque.
+
+== Development workflow
+
+. Work in `src/pythonesque/` and add focused tests under `tests/`.
+. Preserve deterministic behavior: identical seeds must produce identical
+   output sequences.
+. Run the test suite before submitting a change:
++
+[source,console]
+----
+python3 -m pytest -q
+----
+. Update link:CHANGELOG.adoc[CHANGELOG.adoc] for user-visible changes.
+
+== Style
+
+Use standard Python style, descriptive names, and concise docstrings for
+public behavior. Keep the package free of runtime dependencies unless a change
+clearly requires one.
+
+== Reporting issues
+
+Please include the Python version, package version, a minimal reproduction,
+and expected versus actual behavior.

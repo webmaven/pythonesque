@@ -1,0 +1,29 @@
+= Agent Instructions
+
+== Scope
+
+This repository is a Python package using a `src/` layout and Hatchling as its
+PEP 517 build backend.
+
+== Layout
+
+* `src/pythonesque/` contains production code.
+* `tests/` contains pytest tests.
+* `docs/pythonesque-spec.txt` is the source design specification; preserve it.
+* `pyproject.toml` owns package, build, and test configuration.
+
+== Working Rules
+
+* Keep the public import stable: `from pythonesque import UnifiedFoundationalGenerator`.
+* Keep generation deterministic for a given string seed and avoid modifying
+  process-global random state.
+* Add or update tests whenever behavior changes.
+* Do not commit generated `build/`, `dist/`, cache, or `*.egg-info` files.
+
+== Verification
+
+[source,console]
+----
+python3 -m pytest -q
+python3 -m pip wheel . --no-deps --wheel-dir /tmp/pythonesque-wheel
+----
