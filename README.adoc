@@ -1,7 +1,7 @@
 = pythonesque
 :toc:
 
-An offline, seed-deterministic generator of absurdist institutional titles.
+An offline, seed-deterministic generator of absurdist institutional titles with Monty Python-inspired enhancements.
 
 == Installation
 
@@ -21,8 +21,14 @@ print(generator.generate())
 print(generator.generate(slugify=True))
 ----
 
-The package is organized with a standard `src/` layout. The original design
-specification is retained in link:docs/pythonesque-spec.txt[docs/].
+== Features
+
+* Seed-deterministic generation for reproducible results
+* Absurdist institutional titles in the spirit of Monty Python
+* Modular template system for vast output variety
+* Enhanced with hundreds of Python-inspired absurd terms
+* URL-safe slug generation option
+* Isolated random number generator (doesn't affect global state)
 
 == Development
 

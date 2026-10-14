@@ -4,13 +4,14 @@ All notable changes to this project are documented here.
 
 == Unreleased
 
-=== Changed
-
-* Adopted Hatchling for PEP 517 builds.
-* Standardized repository documentation and contribution guidance.
+=== Added
+* Enhanced generator with Monty Python-inspired absurdist patterns
+* Added 35 new grammar categories with hundreds of silly terms (occupations, pursuits, products, etc.)
+* Integrated absurd categories into existing templates for expanded variety without length increase
+* Deconstructed long templates into modular components for better variability
+* Updated documentation to reflect new features
 
 == 0.1.0b1 - 2026-08-20
 
 === Added
-
 * Seed-deterministic absurdist title generator.
