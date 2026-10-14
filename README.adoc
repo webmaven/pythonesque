@@ -73,7 +73,7 @@ link:AGENTS.adoc[AGENTS.adoc] for repository automation instructions.
 
 == Complexity and Leading "The" Control
 
-The generator now supports optional control over title complexity and leading article:
+The generator now supports optional control over title complexity and leading article, plus improved slugification:
 
 [source,python]
 ----
@@ -96,8 +96,12 @@ print("\\nNo leading 'The':")
 for _ in range(3):
     print(f"  {gen.generate(allow_leading_the=False)}")
 
+# Improved slugification
+print("\\nSlugified output:")
+print(f"  {gen.generate(slugify=True)}")
+
 # Combined controls
-print("\\nComplexity 3-5, no leading 'The':")
+print("\\nComplexity 3-5, no leading 'The', slugified:")
 for _ in range(3):
-    print(f"  {gen.generate(complexity=(3,5), allow_leading_the=False)}")
+    print(f"  {gen.generate(complexity=(3,5), allow_leading_the=False, slugify=True)}")
 ----

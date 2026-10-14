@@ -638,6 +638,84 @@ class UnifiedFoundationalGenerator:
     def _fix_indefinite_articles(cls, text: str) -> str:
         return re.sub(r"\b([Aa])\s+([\w-]+)", lambda m: ("An" if m.group(1) == "A" else "an") + " " + m.group(2) if cls._VOWEL_SOUND.match(m.group(2)) else m.group(0), text)
 
+    def _slugify(self, text: str) -> str:
+        """
+        Convert text to a URL-friendly slug.
+        
+        Improved slugification that:
+        1. Converts to lowercase
+        2. Handles common symbol-to-word conversions
+        3. Handles basic Unicode transliteration
+        4. Replaces non-alphanumeric with hyphens
+        5. Normalizes multiple hyphens to single
+        6. Trims leading/trailing hyphens
+        
+        Args:
+            text: Input string to slugify
+            
+        Returns:
+            URL-friendly slug string
+        """
+        if not text:
+            return ""
+        
+        # Convert to lowercase
+        result = text.lower()
+        
+        # Symbol to word mappings (basic set)
+        symbol_map = {
+            '&': 'and',
+            '$': 'usd',
+            '€': 'eur',
+            '£': 'gbp',
+            '¥': 'jpy',
+            '%': 'pct',
+            '@': 'at',
+            '+': 'plus',
+            '=': 'eq',
+            '<': 'lt',
+            '>': 'gt',
+        }
+        
+        # Replace symbols with words
+        for symbol, word in symbol_map.items():
+            result = result.replace(symbol, f' {word} ')
+        
+        # Basic Unicode transliteration (common accented characters)
+        unicode_map = {
+            'à': 'a', 'á': 'a', 'â': 'a', 'ã': 'a', 'ä': 'a', 'å': 'a',
+            'æ': 'ae', 'ç': 'c',
+            'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e',
+            'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
+            'ð': 'd',
+            'ñ': 'n',
+            'ò': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o', 'ø': 'o',
+            'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u',
+            'ý': 'y', 'þ': 'th', 'ÿ': 'y',
+            'ă': 'a', 'ê': 'e', 'î': 'i', 'ô': 'o', 'û': 'u',
+            'ą': 'a', 'Ą': 'A',
+        }
+        
+        # Apply Unicode transliteration
+        for unicode_char, ascii_char in unicode_map.items():
+            result = result.replace(unicode_char, ascii_char)
+            result = result.replace(unicode_char.upper(), ascii_char.upper())
+        
+        # Replace non-alphanumeric characters (except spaces) with hyphens
+        result = re.sub(r'[^a-z0-9\s]', '-', result)
+        
+        # Replace multiple spaces/hyphens with single hyphen
+        result = re.sub(r'[\s-]+', '-', result)
+        
+        # Remove leading/trailing hyphens
+        result = result.strip('-')
+        
+        # Limit length to reasonable maximum (similar to WP)
+        if len(result) > 100:
+            result = result[:100].rstrip('-')
+        
+        return result
+
     def generate(self, slugify: bool = False, complexity: Optional[Union[int, Tuple[int, int]]] = None, 
                  allow_leading_the: bool = True) -> str:
         """Return the next generated title; optionally return a URL-safe slug.
@@ -668,8 +746,7 @@ class UnifiedFoundationalGenerator:
         
         # Apply slugify if requested
         if slugify:
-            phrase = re.sub(r"[^a-zA-Z0-9\s-]", "", phrase).lower()
-            return "-".join(phrase.split())
+            return self._slugify(phrase)
         return phrase
 
     def generate_multiple(self, count: int, slugify: bool = False, 

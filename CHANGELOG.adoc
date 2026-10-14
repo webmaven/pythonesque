@@ -17,6 +17,7 @@ All notable changes to this project are documented here.
   * list_templates() for inspecting available templates and categories
   * **Complexity control:** complexity parameter for exact or range of title lengths
   * **Leading "The" control:** allow_leading_the parameter to strip leading article
+  * **Improved slugification:** Enhanced _slugify method with better symbol handling, Unicode transliteration, and hyphen normalization
 * Updated documentation to reflect new features
 
 == 0.1.0b1 - 2026-08-20
