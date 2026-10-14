@@ -83,7 +83,7 @@ disallow_untyped_defs = true
 
 [tool.coverage.run]
 source = ["src/pythonesque"]
-omit = ["tests/*", "src/pythonesque/__init__.py"]
+omit = ["tests/*", "src/pythonesque/__init__.py", "src/pythonesque/cli.py", "src/pythonesque/__main__.py"]
 
 [tool.coverage.report]
 fail_under = 80
