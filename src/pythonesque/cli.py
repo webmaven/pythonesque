@@ -51,26 +51,28 @@ def main() -> None:
         epilog="""
 Examples:
   pythonesque                          # Generate one title
-  pythonesque --seed "test"            # Custom seed
-  pythonesque --count 5                # Five titles
-  pythonesque --unique                 # Unique titles (boolean flag)
-  pythonesque --slugify                # Title and slug pairs
-  pythonesque --complexity 3           # Exactly 3 elements
-  pythonesque --complexity 2-4         # 2-4 elements range
-  pythonesque --no-leading-the         # Strip leading "The"
-  pythonesque --count 3 --json         # JSON output
-  pythonesque --count 2 --csv          # CSV output
+  pythonesque -s "test"                # Custom seed
+  pythonesque -c 5                     # Five titles
+  pythonesque -u                       # Unique titles (boolean flag)
+  pythonesque -g                       # Title and slug pairs
+  pythonesque -x 3                     # Exactly 3 elements
+  pythonesque -x 2-4                   # 2-4 elements range
+  pythonesque -n                       # Strip leading "The"
+  pythonesque -c 3 -j                  # JSON output
+  pythonesque -c 2 --csv               # CSV output
         """
     )
     
     parser.add_argument(
         '--seed',
+        '-s',
         default="The Larch",
         help='Seed for deterministic generation (default: "The Larch")'
     )
     
     parser.add_argument(
         '--count',
+        '-c',
         type=int,
         default=1,
         help='Number of titles to generate (default: 1)'
@@ -78,30 +80,35 @@ Examples:
     
     parser.add_argument(
         '--unique',
+        '-u',
         action='store_true',
         help='Generate unique titles (boolean flag)'
     )
     
     parser.add_argument(
         '--slugify',
+        '-g',
         action='store_true',
         help='Slugify output (returns title,slug tuples)'
     )
     
     parser.add_argument(
         '--complexity',
+        '-x',
         type=str,
         help='Title complexity: integer for exact length, or "min-max" for range'
     )
     
     parser.add_argument(
         '--no-leading-the',
+        '-n',
         action='store_true',
         help='Strip leading "The " from titles'
     )
     
     parser.add_argument(
         '--json',
+        '-j',
         action='store_true',
         help='Output as JSON array'
     )
