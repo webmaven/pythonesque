@@ -9,6 +9,12 @@ All notable changes to this project are documented here.
 * Added 35 new grammar categories with hundreds of silly terms (occupations, pursuits, products, etc.)
 * Integrated absurd categories into existing templates for expanded variety without length increase
 * Deconstructed long templates into modular components for better variability
+* **Added API enhancements:**
+  * generate_multiple() for batch title generation
+  * generate_unique() for guaranteed unique titles
+  * get_seed() to retrieve the generator's seed
+  * get_template_stats() for template category statistics
+  * list_templates() for inspecting available templates and categories
 * Updated documentation to reflect new features
 
 == 0.1.0b1 - 2026-08-20

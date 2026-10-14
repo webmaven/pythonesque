@@ -3,7 +3,7 @@
 import hashlib
 import random
 import re
-from typing import Dict, List
+from typing import Dict, List, Optional, Union
 
 
 class UnifiedFoundationalGenerator:
@@ -19,6 +19,7 @@ class UnifiedFoundationalGenerator:
     def __init__(self, seed: str = "The Larch") -> None:
         if not isinstance(seed, str):
             raise TypeError("seed must be a string")
+        self._seed = seed
         self._rng = random.Random(int(hashlib.md5(seed.encode("utf-8")).hexdigest(), 16))
         self._grammar: Dict[str, List[str]] = {
             "START": [
@@ -515,3 +516,91 @@ class UnifiedFoundationalGenerator:
             phrase = re.sub(r"[^a-zA-Z0-9\s-]", "", phrase).lower()
             return "-".join(phrase.split())
         return phrase
+
+    def generate_multiple(self, count: int, slugify: bool = False) -> List[str]:
+        """
+        Generate multiple titles at once.
+        
+        Args:
+            count: Number of titles to generate
+            slugify: Whether to return URL-safe slugs
+            
+        Returns:
+            List of generated titles
+        """
+        if not isinstance(count, int) or count < 1:
+            raise ValueError("count must be a positive integer")
+        return [self.generate(slugify=slugify) for _ in range(count)]
+
+    def generate_unique(self, count: int, slugify: bool = False) -> List[str]:
+        """
+        Generate multiple unique titles (no duplicates).
+        
+        Args:
+            count: Number of unique titles to generate
+            slugify: Whether to return URL-safe slugs
+            
+        Returns:
+            List of unique generated titles
+            
+        Note:
+            May take longer than requested count if duplicates are encountered,
+            but guarantees uniqueness in the result.
+        """
+        if not isinstance(count, int) or count < 1:
+            raise ValueError("count must be a positive integer")
+        results = set()
+        # Generate extra to account for potential duplicates, but limit attempts
+        max_attempts = count * 10
+        attempts = 0
+        
+        while len(results) < count and attempts < max_attempts:
+            results.add(self.generate(slugify=slugify))
+            attempts += 1
+            
+        return list(results)
+
+    def get_seed(self) -> str:
+        """
+        Get the seed used to initialize this generator.
+        
+        Returns:
+            The seed string
+        """
+        return self._seed
+
+    def get_template_stats(self) -> Dict[str, int]:
+        """
+        Get statistics about the grammar templates.
+        
+        Returns:
+            Dictionary with template category names and their option counts
+        """
+        return {
+            key: len(value) for key, value in self._grammar.items() 
+            if isinstance(value, list)
+        }
+
+    def list_templates(self, category: Optional[str] = None) -> Union[List[str], Dict[str, List[str]]]:
+        """
+        List available templates or template categories.
+        
+        Args:
+            category: Optional category name to list templates for.
+                     If None, returns all categories and their templates.
+                     
+        Returns:
+            If category is specified: List of templates in that category
+            If category is None: Dictionary of all categories and their templates
+        """
+        if category is None:
+            return {
+                key: value for key, value in self._grammar.items()
+                if isinstance(value, list)
+            }
+        elif category in self._grammar and isinstance(self._grammar[category], list):
+            return self._grammar[category]
+        else:
+            return []
+
+

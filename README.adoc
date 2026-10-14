@@ -16,9 +16,32 @@ pip install pythonesque
 ----
 from pythonesque import UnifiedFoundationalGenerator
 
+# Basic usage (unchanged)
 generator = UnifiedFoundationalGenerator(seed="The Larch")
 print(generator.generate())
 print(generator.generate(slugify=True))
+
+# Enhanced API features
+print("--- Multiple titles ---")
+titles = generator.generate_multiple(5)
+for i, title in enumerate(titles, 1):
+    print(f"{i}. {title}")
+
+print("--- Unique titles ---")
+unique_titles = generator.generate_unique(3)
+for i, title in enumerate(unique_titles, 1):
+    print(f"{i}. {title}")
+
+print("--- Generator info ---")
+print(f"Seed: {generator.get_seed()}")
+stats = generator.get_template_stats()
+print(f"Template categories: {len(stats)}")
+print(f"Most options in: {max(stats, key=stats.get)} ({stats[max(stats, key=stats.get)]} options)")
+
+# Template inspection
+print("--- Available categories ---")
+categories = generator.list_templates()
+print(f"First 5 categories: {list(categories.keys())[:5]}")
 ----
 
 == Features
@@ -29,6 +52,11 @@ print(generator.generate(slugify=True))
 * Enhanced with hundreds of Python-inspired absurd terms
 * URL-safe slug generation option
 * Isolated random number generator (doesn't affect global state)
+* **Enhanced API:**
+  * Batch generation (`generate_multiple`)
+  * Unique title generation (`generate_unique`)
+  * Seed retrieval (`get_seed`)
+  - Template introspection (`get_template_stats`, `list_templates`)
 
 == Development
 
