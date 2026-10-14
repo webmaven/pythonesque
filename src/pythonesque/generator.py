@@ -1280,17 +1280,21 @@ class UnifiedFoundationalGenerator:
         # Fix "a" -> "an" before vowel sounds
         text = re.sub(
             r"\b([Aa])\s+([\w-]+)",
-            lambda m: ("An" if m.group(1) == "A" else "an") + " " + m.group(2)
-            if cls._VOWEL_SOUND.match(m.group(2))
-            else m.group(0),
+            lambda m: (
+                ("An" if m.group(1) == "A" else "an") + " " + m.group(2)
+                if cls._VOWEL_SOUND.match(m.group(2))
+                else m.group(0)
+            ),
             text,
         )
         # Fix "an" -> "a" before consonant sounds
         text = re.sub(
             r"\b([Aa])n\s+([\w-]+)",
-            lambda m: ("A" if m.group(1) == "A" else "a") + " " + m.group(2)
-            if not cls._VOWEL_SOUND.match(m.group(2))
-            else m.group(0),
+            lambda m: (
+                ("A" if m.group(1) == "A" else "a") + " " + m.group(2)
+                if not cls._VOWEL_SOUND.match(m.group(2))
+                else m.group(0)
+            ),
             text,
         )
         return text
