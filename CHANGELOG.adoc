@@ -22,8 +22,8 @@ All notable changes to this project are documented here.
   * **Unique parameter:** Changed from integer count to boolean flag (breaking change)
 * **Added Command Line Interface (CLI):**
   * Console script entry point: `pythonesque`
-  * Full featured CLI with short and long options (-s/--seed, -c/--count, -u/--unique, -g/--slugify, -x/--complexity, -n/--no-leading-the, -j/--json, etc.)
-  * Full featured CLI with seed, count, unique, slugify, complexity, leading-the controls
+  * Full featured CLI with short and long options (-s/--seed, -c/--count, -u/--unique, -g/--slugify, -x/--complexity, -n/--no-leading-the, -f/--format, etc.)
+  * Output format argument: --format/-f with values json, csv, tsv (default: plain text)
   * Multiple output formats: plain (default), JSON, CSV, TSV
   * Help and version information
 * Updated documentation to reflect new features and API changes

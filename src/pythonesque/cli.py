@@ -58,8 +58,8 @@ Examples:
   pythonesque -x 3                     # Exactly 3 elements
   pythonesque -x 2-4                   # 2-4 elements range
   pythonesque -n                       # Strip leading "The"
-  pythonesque -c 3 -j                  # JSON output
-  pythonesque -c 2 --csv               # CSV output
+  pythonesque -c 3 -f json             # JSON output
+  pythonesque -c 2 -f csv              # CSV output
         """
     )
     
@@ -107,22 +107,10 @@ Examples:
     )
     
     parser.add_argument(
-        '--json',
-        '-j',
-        action='store_true',
-        help='Output as JSON array'
-    )
-    
-    parser.add_argument(
-        '--csv',
-        action='store_true',
-        help='Output as CSV (headerless, single column)'
-    )
-    
-    parser.add_argument(
-        '--tsv',
-        action='store_true',
-        help='Output as TSV (tab-separated, headerless)'
+        '--format',
+        '-f',
+        choices=['json', 'csv', 'tsv'],
+        help='Output format: json, csv, or tsv (default: plain text)'
     )
     
     parser.add_argument(
@@ -165,16 +153,16 @@ Examples:
             )
         
         # Output results
-        if args.json:
+        if args.format == 'json':
             print(json.dumps(results))
-        elif args.csv:
+        elif args.format == 'csv':
             writer = csv.writer(sys.stdout)
             for result in results:
                 if isinstance(result, tuple) and args.slugify:
                     writer.writerow([result[0], result[1]])  # title, slug
                 else:
                     writer.writerow([result])  # just title
-        elif args.tsv:
+        elif args.format == 'tsv':
             for result in results:
                 if isinstance(result, tuple) and args.slugify:
                     print(f"{result[0]}\t{result[1]}")  # title{tab}slug
