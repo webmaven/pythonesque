@@ -15,6 +15,8 @@ All notable changes to this project are documented here.
   * get_seed() to retrieve the generator's seed
   * get_template_stats() for template category statistics
   * list_templates() for inspecting available templates and categories
+  * **Complexity control:** complexity parameter for exact or range of title lengths
+  * **Leading "The" control:** allow_leading_the parameter to strip leading article
 * Updated documentation to reflect new features
 
 == 0.1.0b1 - 2026-08-20

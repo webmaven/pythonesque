@@ -3,7 +3,7 @@
 import hashlib
 import random
 import re
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Tuple
 
 
 class UnifiedFoundationalGenerator:
@@ -22,6 +22,136 @@ class UnifiedFoundationalGenerator:
         self._seed = seed
         self._rng = random.Random(int(hashlib.md5(seed.encode("utf-8")).hexdigest(), 16))
         self._grammar: Dict[str, List[str]] = {
+            "START": [
+                "The {{enhanced_institution}}", "The {{generated_academic_body}}", "The {{ecclesiastical_body}}",
+                "The {{abstracted_object}} {{enhanced_institution}}", "The {{abstracted_object}} {{generated_logistics_action}}",
+                "The {{enhanced_institution}} of {{noun_verbing}} {{noun_plural}}",
+                "The {{bureaucratic_rank}} {{enhanced_institution}} for {{noun_verbing}} {{noun_plural}}",
+                "The {{botanical_item}} {{noun_verbing}} {{geography_sing}}", "No one {{verb_present}} the {{optional_nationality}} {{generated_academic_body}}",
+                "A Brief {{academic_treatise}} on {{optional_modifier}} {{noun_plural}}",
+                # Modular historical competition templates (replacing long 7-element template)
+                "{{historical_competition_prefix}} {{historical_competition_middle}} {{historical_competition_suffix}}",
+                "The {{historical_ordinal}} {{optional_annual}} {{competition}} Exhibition",
+                "{{historical_ordinal}} Year {{competition}}: The {{optional_modifier}} Showcase",
+                "A {{unladen_qualifier}} {{optional_nationality}} {{noun_singular}}", "The {{generated_proper_noun}} and {{generated_proper_noun}} {{generated_academic_body}}",
+                "We Apologize for the {{optional_modifier}} {{noun_verbing}} of the {{nons_singular}}", "The {{generated_proper_noun}} and {{generated_proper_noun}} {{generated_academic_body}}",
+                "We Apologize for the {{optional_modifier}} {{noun_verbing}} of the {{noun_singular}}", "The {{geography_sing}} and {{geography_sing}} Cooperative {{enhanced_institution}}",
+                "{{generated_proper_noun}}, Assistant Under-Secretary for {{noun_verbing}}", "A Audition for the Role of the {{optional_modifier}} {{noun_singular}}",
+                "A {{theatrical_format}} Adaptation of the {{noun_verbing}} {{nong_singular}}", "The {{historical_ordinal}} Century Costumed {{theatrical_format}} on {{nong_verbing}}",
+                # Modular legal templates (replacing long 6-7 element templates)
+                "{{legal_authority}} {{legal_location}} {{legal_framework}}, {{generated_legal_action}} is {{prohibition}}",
+                "By Order of {{bureaucratic_rank}} {{enhanced_institution}}, {{generated_legal_action}} shall be {{adverb}} {{prohibition}}",
+                "According to {{legal_statute}} of {{geography_sing}}, No {{generated_legal_action}} permitted",
+                # Modular academic position templates (replacing long 6-element template)
+                "{{academic_title}} of {{generated_academic_discipline}} {{institution_affiliation}}",
+                "Lead Researcher in {{generated_academic_discipline}} at the {{enhanced_institution}} of {{geography_sing}}",
+                "Director of Studies for {{generated_academic_discipline}} within {{geography_sing}}",
+                # Modular sports competition templates (replacing long 6-element template)
+                "{{historical_ordinal}} {{sports_event}} of the {{optional_nationality}} {{generated_academic_discipline}}",
+                "The {{optional_nationality}} {{generated_academic_discipline}} {{sports_clash}} Tournament",
+                "{{historical_ordinal}} Annual {{generated_academic_discipline}} {{sports_clash}} Championship",
+                # Enhanced templates with optional absurd elements for variety
+                "The {{enhanced_institution}} of {{absurd_profession}}",
+                "The {{bureaucratic_rank}} {{enhanced_institution}} for {{pointless_activity}} {{noun_plural}}",
+                "The {{generated_academic_body}} Committee on {{ridiculous_goods}}",
+                "A Brief {{academic_treatise}} on {{pointless_pursuit}} {{optional_modifier}}",
+                "The Society for {{silly_occupation}} Advancement",
+                "The Institute of {{useless_studies}} Research Division",
+                "{{absurd_product}} Manufacturing Consortium",
+                "The Guild of {{absurd_profession}} and {{ridiculous_workers}} Alliance",
+                "We Apologize for the {{pointless_activity}} of the {{absurd_profession}}",
+                "The {{optional_nationality}} Confederation of {{ridiculous_workers}}",
+                "The Board of Directors for {{pointless_service}} Providers",
+                "The Committee for Ethical Treatment of {{ridiculous_goods}}",
+                "Academic Board of {{pointless_pursuit}} Studies",
+                "The Tribunal of {{absurd_academic_topic}} Standards",
+                "The Registry of {{useless_achievement}} Holders",
+                "The Ministry of {{silly_occupation}} and {{pointless_pursuit}} Affairs",
+                "The Society for Prevention of Cruelty to {{ridiculous_goods}}",
+                "The Institute for Advanced {{pointless_theory}} Research",
+                # New Monty Python-inspired absurdism templates (standalone options)
+                "The Ministry of {{silly_occupation}}",
+                "The Society for {{pointless_pursuit}}",
+                "The Guild of {{absurd_profession}}",
+                "The Union of {{ridiculous_workers}}",
+                "The Institute of {{useless_studies}}",
+                "{{absurd_product}} Emporium",
+                "{{pointless_service}} Available Here",
+                "We Sell {{absurd_commodity}}",
+                "Specialists in {{pointless_activity}}",
+                "Purveyors of {{ridiculous_goods}}",
+                "Form {{form_number}}/{{absurd_form_name}}",
+                "Application for {{pointless_permit}}",
+                "License to {{absurd_activity}}",
+                "Permit Required for {{ridiculous_action}}",
+                "Certificate of {{useless_achievement}}",
+                "The {{absurd_entertainment}} Show",
+                "{{pointless_celebrity}}'s {{absurd_talent}} Hour",
+                "Starring in {{ridiculous_production}}",
+                "Feeding the {{absurd_performance}}",
+                "Presenting the {{pointless_spectacle}}",
+                "The International Conference on {{pointless_theory}}",
+                "Symposium on {{absurd_academic_topic}}",
+                "Journal of {{ridiculous_research}}",
+                "Proceedings of the {{absurd_college}}",
+                "Treatise on {{pointless_philosophy}}",
+                "The {{absurd_vehicle}} Rally",
+                "{{pointless_journey}} Expedition",
+                "Travel via {{ridiculous_transport}}",
+                "Specialists in {{absurd_navigation}}",
+                "Experts in {{pointless_routing}}",
+                "The Board of Directors for {{abstracted_object}} {{generated_logistics_action}}", "The {{enhanced_institution}} for the {{generated_logistics_action}} of {{abstracted_object}}",
+                "We Are Experiencing {{interruption_modifier}} {{bureaucratic_noun}} {{generated_academic_body}}", "The {{historical_ordinal}} Semi-Finals of the {{optional_nationality}} {{generated_academic_discipline}} {{sports_clash}}",
+                "The Amalgamated Union of {{pejorative_plural}} and {{generated_academic_discipline}} Practitioners", "A Defensive Strategy for Countering an Attack by {{optional_modifier}} {{botanical_item}}",
+                "The {{bureaucratic_rank}} Registry of Lethal {{abstracted_object}} Deployments", "The Annexation of {{optional_nationality}} {{geography_sing}} by the {{enhanced_institution}}",
+                "The {{historical_ordinal}} {{ecclesiastical_body}} on the {{optional_modifier}} {{theological_crime}}", "A Decreed {{papal_edict}} Concerning the Excommunication of {{pejorative_plural}}",
+                "The {{optional_nationality}} Inquisition into {{noun_verbing}}", "The Theory of the {{noun_singular}}, by {{generated_proper_noun}}", "A Fundamental Law of {{generated_natural_philosophy_axiom}} regarding {{noun_plural}}",
+            ],
+            # ... rest of grammar unchanged ...
+        }
+        # Pre-calculate template complexities for performance
+        self._template_complexities = self._calculate_template_complexities()
+
+    def _calculate_template_complexities(self) -> List[int]:
+        """
+        Calculate the complexity (number of elements) for each START template.
+        
+        Returns:
+            List of integers representing the complexity of each template in START
+        """
+        complexities = []
+        for template in self._grammar["START"]:
+            # Count the number of template tokens ({{...}}) in the template
+            token_count = len(self._TOKEN.findall(template))
+            complexities.append(token_count)
+        return complexities
+
+    def _filter_templates_by_complexity(self, complexity: Optional[Union[int, Tuple[int, int]]]) -> List[int]:
+        """
+        Get indices of START templates that match the complexity criteria.
+        
+        Args:
+            complexity: None (all templates), int (exact count), or tuple (min, max) range
+            
+        Returns:
+            List of template indices that match the complexity criteria
+        """
+        if complexity is None:
+            # No filtering - all templates eligible
+            return list(range(len(self._grammar["START"])))
+        
+        if isinstance(complexity, int):
+            # Exact match
+            return [i for i, count in enumerate(self._template_complexities) if count == complexity]
+        
+        if isinstance(complexity, tuple) and len(complexity) == 2:
+            # Range match
+            min_complexity, max_complexity = complexity
+            return [i for i, count in enumerate(self._template_complexities) 
+                   if min_complexity <= count <= max_complexity]
+        
+        # Invalid complexity specification - fallback to all templates
+        return list(range(len(self._grammar["START"])))
             "START": [
                 "The {{enhanced_institution}}", "The {{generated_academic_body}}", "The {{ecclesiastical_body}}",
                 "The {{abstracted_object}} {{enhanced_institution}}", "The {{abstracted_object}} {{generated_logistics_action}}",
@@ -508,37 +638,71 @@ class UnifiedFoundationalGenerator:
     def _fix_indefinite_articles(cls, text: str) -> str:
         return re.sub(r"\b([Aa])\s+([\w-]+)", lambda m: ("An" if m.group(1) == "A" else "an") + " " + m.group(2) if cls._VOWEL_SOUND.match(m.group(2)) else m.group(0), text)
 
-    def generate(self, slugify: bool = False) -> str:
-        """Return the next generated title; optionally return a URL-safe slug."""
-        phrase = self._fix_indefinite_articles(self._resolve("START"))
+    def generate(self, slugify: bool = False, complexity: Optional[Union[int, Tuple[int, int]]] = None, 
+                 allow_leading_the: bool = True) -> str:
+        """Return the next generated title; optionally return a URL-safe slug.
+        
+        Args:
+            slugify: If True, return URL-safe slug version
+            complexity: None (any length), int (exact length), or tuple (min, max) range
+            allow_leading_the: If False, strip leading "The " from result
+        """
+        # Get filtered template indices based on complexity
+        eligible_indices = self._filter_templates_by_complexity(complexity)
+        
+        # If no templates match complexity criteria, fall back to all templates
+        if not eligible_indices:
+            eligible_indices = list(range(len(self._grammar["START"])))
+        
+        # Select a random template from eligible ones
+        selected_index = self._rng.choice(eligible_indices)
+        selected_template = self._grammar["START"][selected_index]
+        
+        # Generate the phrase
+        phrase = self._fix_indefinite_articles(self._resolve(selected_template))
         phrase = " ".join(phrase.split())
+        
+        # Apply leading "The" control
+        if not allow_leading_the and phrase.startswith("The "):
+            phrase = phrase[4:]  # Remove "The " prefix
+        
+        # Apply slugify if requested
         if slugify:
             phrase = re.sub(r"[^a-zA-Z0-9\s-]", "", phrase).lower()
             return "-".join(phrase.split())
         return phrase
 
-    def generate_multiple(self, count: int, slugify: bool = False) -> List[str]:
+    def generate_multiple(self, count: int, slugify: bool = False, 
+                         complexity: Optional[Union[int, Tuple[int, int]]] = None,
+                         allow_leading_the: bool = True) -> List[str]:
         """
         Generate multiple titles at once.
         
         Args:
             count: Number of titles to generate
             slugify: Whether to return URL-safe slugs
+            complexity: None (any length), int (exact length), or tuple (min, max) range
+            allow_leading_the: If False, strip leading "The " from results
             
         Returns:
             List of generated titles
         """
         if not isinstance(count, int) or count < 1:
             raise ValueError("count must be a positive integer")
-        return [self.generate(slugify=slugify) for _ in range(count)]
+        return [self.generate(slugify=slugify, complexity=complexity, 
+                           allow_leading_the=allow_leading_the) for _ in range(count)]
 
-    def generate_unique(self, count: int, slugify: bool = False) -> List[str]:
+    def generate_unique(self, count: int, slugify: bool = False, 
+                       complexity: Optional[Union[int, Tuple[int, int]]] = None,
+                       allow_leading_the: bool = True) -> List[str]:
         """
         Generate multiple unique titles (no duplicates).
         
         Args:
             count: Number of unique titles to generate
             slugify: Whether to return URL-safe slugs
+            complexity: None (any length), int (exact length), or tuple (min, max) range
+            allow_leading_the: If False, strip leading "The " from results
             
         Returns:
             List of unique generated titles
@@ -555,7 +719,8 @@ class UnifiedFoundationalGenerator:
         attempts = 0
         
         while len(results) < count and attempts < max_attempts:
-            results.add(self.generate(slugify=slugify))
+            results.add(self.generate(slugify=slugify, complexity=complexity, 
+                                    allow_leading_the=allow_leading_the))
             attempts += 1
             
         return list(results)

@@ -70,3 +70,34 @@ python3 -m pytest
 
 See link:CONTRIBUTING.adoc[CONTRIBUTING.adoc] for contribution guidance and
 link:AGENTS.adoc[AGENTS.adoc] for repository automation instructions.
+
+== Complexity and Leading "The" Control
+
+The generator now supports optional control over title complexity and leading article:
+
+[source,python]
+----
+from pythonesque import UnifiedFoundationalGenerator
+
+gen = UnifiedFoundationalGenerator("demo")
+
+# Exact complexity control
+print("Exactly 3 elements:")
+for _ in range(3):
+    print(f"  {gen.generate(complexity=3)}")
+
+# Range complexity control
+print("\\nRange 2-4 elements:")
+for _ in range(3):
+    print(f"  {gen.generate(complexity=(2,4))}")
+
+# No leading "The"
+print("\\nNo leading 'The':")
+for _ in range(3):
+    print(f"  {gen.generate(allow_leading_the=False)}")
+
+# Combined controls
+print("\\nComplexity 3-5, no leading 'The':")
+for _ in range(3):
+    print(f"  {gen.generate(complexity=(3,5), allow_leading_the=False)}")
+----
