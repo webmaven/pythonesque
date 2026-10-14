@@ -25,3 +25,54 @@ clearly requires one.
 
 Please include the Python version, package version, a minimal reproduction,
 and expected versus actual behavior.
+
+== Testing
+
+The project includes a comprehensive testing pyramid:
+
+* **Unit tests** (59): Core methods, token resolution, slugify, article fixing, seed validation
+* **Integration tests** (45): Template expansion, modular components, determinism, complexity filtering
+* **E2E tests** (75): CLI behavior, output formats, flags, error handling
+
+Run all tests with coverage:
+
+[source,console]
+----
+pip install -e ".[dev]"
+pytest --cov=src/pythonesque
+----
+
+=== Test Structure
+* `tests/unit/` - Unit tests for individual methods and components
+* `tests/integration/` - Integration tests for template expansion and modular components
+* `tests/e2e/` - End-to-end tests for CLI behavior
+
+=== Code Quality
+* Lint: `ruff check .`
+* Format: `ruff format .`
+* Type check: `mypy src/pythonesque`
+
+== CI/CD
+
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR:
+
+* **Lint job**: ruff check + format check
+* **Typecheck job**: mypy strict mode
+* **Test matrix**: Python 3.10, 3.11, 3.12, 3.13, 3.14 with coverage
+* **Coverage check**: Enforces 80% minimum coverage
+* **Pre-commit job**: Validates all pre-commit hooks
+
+=== Pre-commit Hooks (`.pre-commit-config.yaml`)
+* ruff with --fix
+* ruff-format
+* mypy strict
+* pytest (always runs)
+
+Install and run pre-commit locally:
+
+[source,console]
+----
+pip install -e ".[dev]"
+pre-commit install
+pre-commit run --all-files
+----

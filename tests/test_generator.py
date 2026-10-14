@@ -18,14 +18,17 @@ def test_different_seeds_are_not_the_same_sequence():
 
 
 def test_slug_is_lowercase_and_url_safe():
-    value = UnifiedFoundationalGenerator("slug").generate(slugify=True)
-    assert value == value.lower()
-    assert value.replace("-", "").isalnum()
+    title, slug = UnifiedFoundationalGenerator("slug").generate(slugify=True)
+    assert slug == slug.lower()
+    assert slug.replace("-", "").isalnum()
 
 
 def test_instance_does_not_change_global_random_state():
-    random.seed(12345); expected = random.random()
-    random.seed(12345); UnifiedFoundationalGenerator().generate(); assert random.random() == expected
+    random.seed(12345)
+    expected = random.random()
+    random.seed(12345)
+    UnifiedFoundationalGenerator().generate()
+    assert random.random() == expected
 
 
 def test_seed_must_be_text():

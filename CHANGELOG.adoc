@@ -5,20 +5,73 @@ All notable changes to this project are documented here.
 == Unreleased
 
 === Added
+* Comprehensive testing pyramid with 179 tests total:
+  * Unit tests (59): Core generator methods, token resolution, slugify, article fixing, seed validation, random state isolation
+  * Integration tests (45): Template expansion, modular components (legal, academic, sports, historical), determinism, complexity filtering, slugify integration
+  * E2E tests (75): CLI basic generation, output formats (JSON/CSV/TSV), flag combinations, error handling, edge cases
+* GitHub Actions CI pipeline (`.github/workflows/ci.yml`):
+  * Lint job (ruff check + format)
+  * Typecheck job (mypy strict mode)
+  * Test matrix across Python 3.10-3.14 with coverage
+  * Coverage check job (80% minimum)
+  * Pre-commit job
+* Pre-commit configuration (`.pre-commit-config.yaml`):
+  * ruff with --fix
+  * ruff-format
+  * mypy strict
+  * pytest (always runs)
+* Complete package metadata in pyproject.toml:
+  * Author, maintainers, keywords, classifiers
+  * Project URLs (Homepage, Repository, Issues, Documentation)
+  * Optional dependencies: dev, test
+  * Tool configurations: pytest, ruff, mypy, coverage
+  * Dynamic versioning via hatch
+* `__main__.py` for proper CLI module entry point
+* Fixed generator complexity filtering with recursive token counting
+* Fixed `_fix_indefinite_articles` bidirectional correction (a→an and an→a)
+* Fixed CSV output blank lines issue
+* Fixed duplicate template causing "The The" in output
+
+=== Changed
+* `generate_unique()` parameter changed from integer count to boolean flag (breaking change)
+* `generate(slugify=True)` now returns (title, slug) tuple (breaking change)
+* CLI now uses `-f/--format` instead of separate `--json/--csv/--tsv` flags
+
+== 0.1.1b1 - 2026-10-14
+
+=== Added
+* Comprehensive testing pyramid (unit, integration, E2E)
+* GitHub Actions CI pipeline
+* Pre-commit hooks configuration
+* Complete package metadata for PyPI publishing
+* Recursive template complexity calculation
+* Bidirectional indefinite article fixing
+* CSV output formatting fixes
+
+=== Fixed
+* Generator complexity filtering now counts nested tokens correctly
+* Indefinite article fixing now handles both "a"→"an" and "an"→"a"
+* CLI CSV output no longer produces blank lines
+* Duplicate template entries causing "The The" prefix removed
+* All linting (ruff), type checking (mypy), and tests pass
+
+== 0.1.0b1 - 2026-08-20
+
+=== Added
 * Enhanced generator with Monty Python-inspired absurdist patterns
 * Added 35 new grammar categories with hundreds of silly terms (occupations, pursuits, products, etc.)
 * Integrated absurd categories into existing templates for expanded variety without length increase
 * Deconstructed long templates into modular components for better variability
 * **Added API enhancements:**
-  * generate_multiple() for batch title generation
-  * generate_unique() for guaranteed unique titles (now boolean flag)
-  * get_seed() to retrieve the generator's seed
-  * get_template_stats() for template category statistics
-  * list_templates() for inspecting available templates and categories
-  * **Complexity control:** complexity parameter for exact or range of title lengths
-  * **Leading "The" control:** allow_leading_the parameter to strip leading article
-  * **Improved slugification:** Enhanced _slugify method with better symbol handling, Unicode transliteration, and hyphen normalization
-  * **Slugification return:** Now returns (title, slug) tuple when slugify=True (breaking change)
+  * `generate_multiple()` for batch title generation
+  * `generate_unique()` for guaranteed unique titles (now boolean flag)
+  * `get_seed()` to retrieve the generator's seed
+  * `get_template_stats()` for template category statistics
+  * `list_templates()` for inspecting available templates and categories
+  * **Complexity control:** `complexity` parameter for exact or range of title lengths
+  * **Leading "The" control:** `allow_leading_the` parameter to strip leading article
+  * **Improved slugification:** Enhanced `_slugify` method with better symbol handling, Unicode transliteration, and hyphen normalization
+  * **Slugification return:** Now returns (title, slug) tuple when `slugify=True` (breaking change)
   * **Unique parameter:** Changed from integer count to boolean flag (breaking change)
 * **Added Command Line Interface (CLI):**
   * Console script entry point: `pythonesque`
@@ -28,12 +81,7 @@ All notable changes to this project are documented here.
   * Help and version information
 * Updated documentation to reflect new features and API changes
 
-== 0.1.0b1 - 2026-08-20
-
-=== Added
-* Seed-deterministic absurdist title generator.
-
-== 0.1.0b1 - 2026-08-20
+== 0.1.0b1 - 2026-08-20 (initial)
 
 === Added
 * Seed-deterministic absurdist title generator.
