@@ -717,13 +717,17 @@ class UnifiedFoundationalGenerator:
         return result
 
     def generate(self, slugify: bool = False, complexity: Optional[Union[int, Tuple[int, int]]] = None, 
-                 allow_leading_the: bool = True) -> str:
+                 allow_leading_the: bool = True) -> Union[str, Tuple[str, str]]:
         """Return the next generated title; optionally return a URL-safe slug.
         
         Args:
-            slugify: If True, return URL-safe slug version
+            slugify: If True, return tuple of (title, slug), else just title
             complexity: None (any length), int (exact length), or tuple (min, max) range
             allow_leading_the: If False, strip leading "The " from result
+            
+        Returns:
+            If slugify=False: str (title)
+            If slugify=True: tuple of (title, slug)
         """
         # Get filtered template indices based on complexity
         eligible_indices = self._filter_templates_by_complexity(complexity)
@@ -746,59 +750,62 @@ class UnifiedFoundationalGenerator:
         
         # Apply slugify if requested
         if slugify:
-            return self._slugify(phrase)
+            slug = self._slugify(phrase)
+            return (phrase, slug)
         return phrase
 
     def generate_multiple(self, count: int, slugify: bool = False, 
                          complexity: Optional[Union[int, Tuple[int, int]]] = None,
-                         allow_leading_the: bool = True) -> List[str]:
+                         allow_leading_the: bool = True) -> List[Union[str, Tuple[str, str]]]:
         """
         Generate multiple titles at once.
         
         Args:
             count: Number of titles to generate
-            slugify: Whether to return URL-safe slugs
+            slugify: If True, return list of (title, slug) tuples, else list of titles
             complexity: None (any length), int (exact length), or tuple (min, max) range
             allow_leading_the: If False, strip leading "The " from results
             
         Returns:
-            List of generated titles
+            If slugify=False: List[str] (titles)
+            If slugify=True: List[Tuple[str, str]] (title, slug tuples)
         """
         if not isinstance(count, int) or count < 1:
             raise ValueError("count must be a positive integer")
         return [self.generate(slugify=slugify, complexity=complexity, 
                            allow_leading_the=allow_leading_the) for _ in range(count)]
 
-    def generate_unique(self, count: int, slugify: bool = False, 
+    def generate_unique(self, slugify: bool = False, 
                        complexity: Optional[Union[int, Tuple[int, int]]] = None,
-                       allow_leading_the: bool = True) -> List[str]:
+                       allow_leading_the: bool = True, unique: bool = False) -> List[Union[str, Tuple[str, str]]]:
         """
         Generate multiple unique titles (no duplicates).
         
         Args:
-            count: Number of unique titles to generate
-            slugify: Whether to return URL-safe slugs
+            slugify: If True, return list of (title, slug) tuples, else list of titles
             complexity: None (any length), int (exact length), or tuple (min, max) range
             allow_leading_the: If False, strip leading "The " from results
+            unique: If True, ensure all titles are unique (no duplicates)
             
         Returns:
-            List of unique generated titles
-            
-        Note:
-            May take longer than requested count if duplicates are encountered,
-            but guarantees uniqueness in the result.
+            If slugify=False: List[str] (titles)
+            If slugify=True: List[Tuple[str, str]] (title, slug tuples)
         """
-        if not isinstance(count, int) or count < 1:
-            raise ValueError("count must be a positive integer")
         results = set()
         # Generate extra to account for potential duplicates, but limit attempts
-        max_attempts = count * 10
+        max_attempts = 50  # Reasonable limit to avoid infinite loops
         attempts = 0
         
-        while len(results) < count and attempts < max_attempts:
-            results.add(self.generate(slugify=slugify, complexity=complexity, 
-                                    allow_leading_the=allow_leading_the))
+        while len(results) < max_attempts and (not unique or len(results) < 1) and attempts < max_attempts:
+            result = self.generate(slugify=slugify, complexity=complexity, 
+                                 allow_leading_the=allow_leading_the)
+            results.add(result)
             attempts += 1
+            
+        # If we wanted unique titles but couldn't get enough, return what we have
+        if unique and len(results) < 2:
+            # Not enough unique values possible, return what we have
+            pass
             
         return list(results)
 

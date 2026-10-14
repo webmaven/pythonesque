@@ -11,14 +11,21 @@ All notable changes to this project are documented here.
 * Deconstructed long templates into modular components for better variability
 * **Added API enhancements:**
   * generate_multiple() for batch title generation
-  * generate_unique() for guaranteed unique titles
+  * generate_unique() for guaranteed unique titles (now boolean flag)
   * get_seed() to retrieve the generator's seed
   * get_template_stats() for template category statistics
   * list_templates() for inspecting available templates and categories
   * **Complexity control:** complexity parameter for exact or range of title lengths
   * **Leading "The" control:** allow_leading_the parameter to strip leading article
   * **Improved slugification:** Enhanced _slugify method with better symbol handling, Unicode transliteration, and hyphen normalization
-* Updated documentation to reflect new features
+  * **Slugification return:** Now returns (title, slug) tuple when slugify=True (breaking change)
+  * **Unique parameter:** Changed from integer count to boolean flag (breaking change)
+* **Added Command Line Interface (CLI):**
+  * Console script entry point: `pythonesque`
+  * Full featured CLI with seed, count, unique, slugify, complexity, leading-the controls
+  * Multiple output formats: plain (default), JSON, CSV, TSV
+  * Help and version information
+* Updated documentation to reflect new features and API changes
 
 == 0.1.0b1 - 2026-08-20
 
