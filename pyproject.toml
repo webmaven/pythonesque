@@ -4,30 +4,93 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pythonesque"
-version = "0.1.0b1"
+version = "0.1.1"
 description = "An offline deterministic absurdist title generator"
 readme = {file = "README.adoc", content-type = "text/plain"}
-requires-python = ">=3.9"
-license = "MIT"
-authors = [{name = "pythonesque contributors"}]
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Michael Ron Bernstein", email = "zopemaven@gmail.com"}
+]
+maintainers = [
+  {name = "Michael Ron Bernstein", email = "zopemaven@gmail.com"}
+]
+keywords = [
+  "monty-python", "absurdist", "generator", "text-generator",
+  "title-generator", "slugs", "cli", "deterministic", "humor"
+]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Utilities",
+  "Environment :: Console",
+]
+[project.urls]
+Homepage = "https://github.com/webmaven/pythonesque"
+Repository = "https://github.com/webmaven/pythonesque"
+Issues = "https://github.com/webmaven/pythonesque/issues"
+Documentation = "https://webmaven.github.io/pythonesque/"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "pytest-cov>=4",
+  "ruff>=0.6",
+  "mypy>=1.11",
+  "pre-commit>=3.0",
+]
+test = [
+  "pytest>=8",
+  "ruff>=0.6",
+  "mypy>=1.11",
 ]
 
 [dependency-groups]
-test = ["pytest>=8"]
+test = ["pytest>=8", "ruff>=0.6", "mypy>=1.11"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pythonesque"]
 
+[project.scripts]
+pythonesque = "pythonesque.cli:main"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
-addopts = ["--import-mode=importlib"]
+addopts = ["--import-mode=importlib", "-v"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "W"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+
+[tool.coverage.run]
+source = ["src/pythonesque"]
+omit = ["tests/*", "src/pythonesque/__init__.py", "src/pythonesque/cli.py", "src/pythonesque/__main__.py"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

@@ -4,13 +4,72 @@ All notable changes to this project are documented here.
 
 == Unreleased
 
+=== Added
+* Comprehensive testing pyramid with 177 tests total:
+  * Unit tests (73): Core generator methods, token resolution, slugify, article fixing, seed validation, random state isolation
+  * Integration tests (42): Template expansion, modular components (legal, academic, sports, historical), determinism, complexity filtering, slugify integration
+  * E2E tests (56): CLI basic generation, output formats (JSON/CSV/TSV), flag combinations, error handling, edge cases
+  * Other tests (6): Root-level generator tests
+* GitHub Actions CI pipeline (`.github/workflows/ci.yml`):
+  * Lint job (ruff check + format)
+  * Typecheck job (mypy strict mode)
+  * Test matrix across Python 3.10-3.14 with coverage
+  * Coverage check job (80% minimum)
+  * Pre-commit job
+* Pre-commit configuration (`.pre-commit-config.yaml`):
+  * ruff with --fix
+  * ruff-format
+  * mypy strict
+  * pytest (always runs)
+* Complete package metadata in pyproject.toml:
+  * Author, maintainers, keywords, classifiers
+  * Project URLs (Homepage, Repository, Issues, Documentation)
+  * Optional dependencies: dev, test
+  * Tool configurations: pytest, ruff, mypy, coverage
+* `__main__.py` for proper CLI module entry point
+
 === Changed
+* `generate_unique()` parameter changed from integer count to boolean flag (breaking change)
+* `generate(slugify=True)` now returns (title, slug) tuple (breaking change)
+* CLI now uses `-f/--format` instead of separate `--json/--csv/--tsv` flags
 
-* Adopted Hatchling for PEP 517 builds.
-* Standardized repository documentation and contribution guidance.
+== 0.1.1 - 2026-10-14
 
-== 0.1.0b1 - 2026-08-20
+=== Fixed
+* Fixed unresolved template tokens: `nons_singular`, `nong_singular`, `nong_verbing` → correct `noun_*` token names
+* Fixed `generate_unique()` non-deterministic ordering by replacing set with ordered list
+* Removed duplicate START template
+* Fixed `generate_unique()` returns now in deterministic order
+* Fixed version string sync between pyproject.toml, cli.py, and CHANGELOG
+* Fixed complexity counting for `_resolve()` tokens now recurses into component grammar keys
+* Removed no-op tests from test_cli_flags_errors.py
+* Fixed ruff configuration moved under `[tool.ruff.lint]`
+* Fixed CI coverage-check conditional changed to `if: success()`
+* Removed unnecessary `types-requests` dependency from pre-commit config
+* Removed unused `input_text` parameter from CLI test helper functions
+
+== 0.1.0 - 2026-08-20
 
 === Added
-
-* Seed-deterministic absurdist title generator.
+* Enhanced generator with Monty Python-inspired absurdist patterns
+* Added 35 new grammar categories with hundreds of silly terms (occupations, pursuits, products, etc.)
+* Integrated absurd categories into existing templates for expanded variety without length increase
+* Deconstructed long templates into modular components for better variability
+* **Added API enhancements:**
+  * `generate_multiple()` for batch title generation
+  * `generate_unique()` for guaranteed unique titles (now boolean flag)
+  * `get_seed()` to retrieve the generator's seed
+  * `get_template_stats()` for template category statistics
+  * `list_templates()` for inspecting available templates and categories
+  * **Complexity control:** `complexity` parameter for exact or range of title lengths
+  * **Leading "The" control:** `allow_leading_the` parameter to strip leading article
+  * **Improved slugification:** Enhanced `_slugify` method with better symbol handling, Unicode transliteration, and hyphen normalization
+  * **Slugification return:** Now returns (title, slug) tuple when `slugify=True` (breaking change)
+  * **Unique parameter:** Changed from integer count to boolean flag (breaking change)
+* **Added Command Line Interface (CLI):**
+  * Console script entry point: `pythonesque`
+  * Full featured CLI with short and long options (-s/--seed, -c/--count, -u/--unique, -g/--slugify, -x/--complexity, -n/--no-leading-the, -f/--format, etc.)
+  * Output format argument: --format/-f with values json, csv, tsv (default: plain text)
+  * Multiple output formats: plain (default), JSON, CSV, TSV
+  * Help and version information
+* Updated documentation to reflect new features and API changes

@@ -1,7 +1,36 @@
 = pythonesque
 :toc:
 
-An offline, seed-deterministic generator of absurdist institutional titles.
+image:https://img.shields.io/pypi/v/pythonesque.svg[PyPI Version]
+image:https://img.shields.io/pypi/pyversions/pythonesque.svg[Python Versions]
+image:https://img.shields.io/pypi/l/pythonesque.svg[License]
+image:https://github.com/webmaven/pythonesque/actions/workflows/ci.yml/badge.svg[CI Status]
+image:https://codecov.io/gh/webmaven/pythonesque/branch/main/graph/badge.svg[Coverage]
+
+An offline, seed-deterministic generator of absurdist institutional titles with Monty Python-inspired enhancements.
+
+== Why pythonesque?
+
+Generates deterministic, reproducible absurdist titles in the spirit of Monty Python's bureaucratic humor.
+Think *The Ministry of Silly Walks*, *The Spanish Inquisition*, *The Argument Clinic*, *The Cheese Shop*—
+but algorithmically composed from modular templates with hundreds of Python-flavored terms.
+
+Useful for:
+
+* Test data generation (predictable but varied)
+* Creative writing prompts and world-building
+* Naming things (servers, projects, meeting rooms, databases)
+* Deterministic chaos for demos and presentations
+
+== One-Liner Demo
+
+[source,console]
+----
+$ pythonesque -c 3 -s "demo"
+The Ministry of Pointless Pursuits
+The Guild of Licensed Tea Bag Inspectors
+12th Annual Sock-Matching Championship
+----
 
 == Installation
 
@@ -10,19 +39,139 @@ An offline, seed-deterministic generator of absurdist institutional titles.
 pip install pythonesque
 ----
 
-== Usage
+== Quick Start
+
+[source,console]
+----
+# Generate a single title
+pythonesque
+
+# Generate 5 titles with a custom seed
+pythonesque -s "my-seed" -c 5
+
+# Generate unique titles as JSON
+pythonesque -u -c 3 -f json
+
+# Generate with slugs in CSV format
+pythonesque -g -c 2 -f csv
+----
+
+== Example Output
+
+[source,python,test]
+----
+>>> from pythonesque import UnifiedFoundationalGenerator
+>>> gen = UnifiedFoundationalGenerator("doctest-seed")
+>>> title = gen.generate()
+>>> isinstance(title, str)
+True
+>>> title, slug = gen.generate(slugify=True)
+>>> isinstance(title, str) and isinstance(slug, str)
+True
+>>> slug == slug.lower()
+True
+>>> all(c.isalnum() or c == '-' for c in slug)
+True
+>>> titles = gen.generate_multiple(3)
+>>> len(titles)
+3
+>>> unique = gen.generate_unique(3)
+>>> len(set(unique))
+3
+>>> gen = UnifiedFoundationalGenerator("doctest-seed")
+>>> title = gen.generate(complexity=1)
+>>> isinstance(title, str) and len(title) > 0
+True
+>>> # Example: 'The Council'
+>>> gen = UnifiedFoundationalGenerator("doctest-seed")
+>>> title = gen.generate(complexity=(3,5))
+>>> isinstance(title, str) and len(title) > 0
+True
+>>> # Example: '13th Year Competition: The Defending Showcase'
+>>> gen = UnifiedFoundationalGenerator("doctest-seed")
+>>> title = gen.generate(allow_leading_the=False)
+>>> isinstance(title, str) and not title.startswith("The ")
+True
+>>> # Example: '2nd Bi-Centennial Gala Exhibition'
+----
+
+== Usage (Python API)
 
 [source,python]
 ----
 from pythonesque import UnifiedFoundationalGenerator
 
+# Basic usage
 generator = UnifiedFoundationalGenerator(seed="The Larch")
 print(generator.generate())
 print(generator.generate(slugify=True))
+
+# Enhanced API features
+print("--- Multiple titles ---")
+titles = generator.generate_multiple(5)
+for i, title in enumerate(titles, 1):
+    print(f"{i}. {title}")
+
+print("--- Unique titles ---")
+unique_titles = generator.generate_unique(3)
+for i, title in enumerate(unique_titles, 1):
+    print(f"{i}. {title}")
+
+print("--- Generator info ---")
+print(f"Seed: {generator.get_seed()}")
+stats = generator.get_template_stats()
+print(f"Template categories: {len(stats)}")
+print(f"Most options in: {max(stats, key=stats.get)} ({stats[max(stats, key=stats.get)]} options)")
+
+# Template inspection
+print("--- Available categories ---")
+categories = generator.list_templates()
+print(f"First 5 categories: {list(categories.keys())[:5]}")
 ----
 
-The package is organized with a standard `src/` layout. The original design
-specification is retained in link:docs/pythonesque-spec.txt[docs/].
+== CLI Usage
+
+[source,console]
+----
+# Basic generation
+pythonesque                          # Generate one title
+pythonesque -s "test"                # Custom seed
+pythonesque -c 5                     # Five titles
+pythonesque -u                       # Unique titles (boolean flag)
+pythonesque -g                       # Title and slug pairs
+pythonesque -x 3                     # Exactly 3 elements
+pythonesque -x 2-4                   # 2-4 elements range
+pythonesque -n                       # Strip leading "The"
+pythonesque -c 3 -f json             # JSON output
+pythonesque -c 2 -f csv              # CSV output
+pythonesque -c 2 -f tsv              # TSV output
+pythonesque --version                # Show version
+pythonesque -h                       # Show help
+----
+
+== Features
+
+* Seed-deterministic generation for reproducible results
+* Absurdist institutional titles in the spirit of Monty Python
+* Modular template system for vast output variety
+* Enhanced with hundreds of Python-inspired absurd terms
+* URL-safe slug generation option
+* Isolated random number generator (doesn't affect global state)
+
+=== Enhanced API
+* Batch generation (`generate_multiple`)
+* Unique title generation (`generate_unique`)
+* Seed retrieval (`get_seed`)
+* Template introspection (`get_template_stats`, `list_templates`)
+* Complexity control (exact count or min-max range)
+* Leading "The" stripping option
+
+=== CLI
+* Full-featured command-line interface
+* Multiple output formats: plain text, JSON, CSV, TSV
+* Deterministic seed-based generation
+* Unique title filtering
+* Complexity and format controls
 
 == Development
 
@@ -31,8 +180,53 @@ then run:
 
 [source,console]
 ----
-python3 -m pytest
+pip install -e ".[test]"
+python -m pytest
 ----
+
+=== Code Quality
+* Lint: `ruff check .`
+* Format: `ruff format .`
+* Type check: `mypy src/pythonesque`
 
 See link:CONTRIBUTING.adoc[CONTRIBUTING.adoc] for contribution guidance and
 link:AGENTS.adoc[AGENTS.adoc] for repository automation instructions.
+
+== Complexity and Leading "The" Control
+
+The generator supports optional control over title complexity and leading article, plus improved slugification:
+
+[source,python]
+----
+from pythonesque import UnifiedFoundationalGenerator
+
+gen = UnifiedFoundationalGenerator("demo")
+
+# Exact complexity control
+print("Exactly 3 elements:")
+for _ in range(3):
+    print(f"  {gen.generate(complexity=3)}")
+
+# Range complexity control
+print("\nRange 2-4 elements:")
+for _ in range(3):
+    print(f"  {gen.generate(complexity=(2,4))}")
+
+# No leading "The"
+print("\nNo leading 'The':")
+for _ in range(3):
+    print(f"  {gen.generate(allow_leading_the=False)}")
+
+# Improved slugification
+print("\nSlugified output:")
+print(f"  {gen.generate(slugify=True)}")
+
+# Combined controls
+print("\nComplexity 3-5, no leading 'The', slugified:")
+for _ in range(3):
+    print(f"  {gen.generate(complexity=(3,5), allow_leading_the=False, slugify=True)}")
+----
+
+== License
+
+MIT License - see LICENSE file for details.
