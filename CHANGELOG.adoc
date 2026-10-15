@@ -5,10 +5,11 @@ All notable changes to this project are documented here.
 == Unreleased
 
 === Added
-* Comprehensive testing pyramid with 179 tests total:
-  * Unit tests (59): Core generator methods, token resolution, slugify, article fixing, seed validation, random state isolation
-  * Integration tests (45): Template expansion, modular components (legal, academic, sports, historical), determinism, complexity filtering, slugify integration
-  * E2E tests (75): CLI basic generation, output formats (JSON/CSV/TSV), flag combinations, error handling, edge cases
+* Comprehensive testing pyramid with 177 tests total:
+  * Unit tests (73): Core generator methods, token resolution, slugify, article fixing, seed validation, random state isolation
+  * Integration tests (42): Template expansion, modular components (legal, academic, sports, historical), determinism, complexity filtering, slugify integration
+  * E2E tests (56): CLI basic generation, output formats (JSON/CSV/TSV), flag combinations, error handling, edge cases
+  * Other tests (6): Root-level generator tests
 * GitHub Actions CI pipeline (`.github/workflows/ci.yml`):
   * Lint job (ruff check + format)
   * Typecheck job (mypy strict mode)
@@ -25,37 +26,29 @@ All notable changes to this project are documented here.
   * Project URLs (Homepage, Repository, Issues, Documentation)
   * Optional dependencies: dev, test
   * Tool configurations: pytest, ruff, mypy, coverage
-  * Dynamic versioning via hatch
 * `__main__.py` for proper CLI module entry point
-* Fixed generator complexity filtering with recursive token counting
-* Fixed `_fix_indefinite_articles` bidirectional correction (a→an and an→a)
-* Fixed CSV output blank lines issue
-* Fixed duplicate template causing "The The" in output
 
 === Changed
 * `generate_unique()` parameter changed from integer count to boolean flag (breaking change)
 * `generate(slugify=True)` now returns (title, slug) tuple (breaking change)
 * CLI now uses `-f/--format` instead of separate `--json/--csv/--tsv` flags
 
-== 0.1.1b1 - 2026-10-14
-
-=== Added
-* Comprehensive testing pyramid (unit, integration, E2E)
-* GitHub Actions CI pipeline
-* Pre-commit hooks configuration
-* Complete package metadata for PyPI publishing
-* Recursive template complexity calculation
-* Bidirectional indefinite article fixing
-* CSV output formatting fixes
+== 0.1.1 - 2026-10-14
 
 === Fixed
-* Generator complexity filtering now counts nested tokens correctly
-* Indefinite article fixing now handles both "a"→"an" and "an"→"a"
-* CLI CSV output no longer produces blank lines
-* Duplicate template entries causing "The The" prefix removed
-* All linting (ruff), type checking (mypy), and tests pass
+* Fixed unresolved template tokens: `nons_singular`, `nong_singular`, `nong_verbing` → correct `noun_*` token names
+* Fixed `generate_unique()` non-deterministic ordering by replacing set with ordered list
+* Removed duplicate START template
+* Fixed `generate_unique()` returns now in deterministic order
+* Fixed version string sync between pyproject.toml, cli.py, and CHANGELOG
+* Fixed complexity counting for `_resolve()` tokens now recurses into component grammar keys
+* Removed no-op tests from test_cli_flags_errors.py
+* Fixed ruff configuration moved under `[tool.ruff.lint]`
+* Fixed CI coverage-check conditional changed to `if: success()`
+* Removed unnecessary `types-requests` dependency from pre-commit config
+* Removed unused `input_text` parameter from CLI test helper functions
 
-== 0.1.0b1 - 2026-08-20
+== 0.1.0 - 2026-08-20
 
 === Added
 * Enhanced generator with Monty Python-inspired absurdist patterns
@@ -80,8 +73,3 @@ All notable changes to this project are documented here.
   * Multiple output formats: plain (default), JSON, CSV, TSV
   * Help and version information
 * Updated documentation to reflect new features and API changes
-
-== 0.1.0b1 - 2026-08-20 (initial)
-
-=== Added
-* Seed-deterministic absurdist title generator.

@@ -53,14 +53,14 @@ class TestBuildProperNoun:
 
     def test_basic_structure(self):
         gen = UnifiedFoundationalGenerator("proper-noun")
-        results = [gen.generate() for _ in range(20)]
+        results = [gen._build_proper_noun() for _ in range(20)]
         # Should contain titles like "Sir", "Professor", etc.
         titles_found = any("Sir " in r or "Professor " in r or "Inspector " in r for r in results)
         assert titles_found
 
     def test_name_components_present(self):
         gen = UnifiedFoundationalGenerator("name-parts")
-        results = [gen.generate() for _ in range(30)]
+        results = [gen._build_proper_noun() for _ in range(30)]
         # Check for known first names
         first_names = [
             "Arthur",

@@ -15,6 +15,23 @@ class UnifiedFoundationalGenerator:
     _TOKEN = re.compile(r"{{(\w+)}}")
     _VOWEL_SOUND = re.compile(r"^(?:[aeiou]|honest|honor|hour|heir)", re.I)
 
+    _RESOLVE_TOKEN_MAP: dict[str, list[str]] = {
+        "generated_proper_noun": ["name_title", "name_first", "name_last"],
+        "enhanced_institution": ["institution_descriptor", "institution_base"],
+        "generated_legal_action": ["legal_core_action", "legal_situational_pattern"],
+        "generated_natural_philosophy_axiom": [
+            "science_prefix",
+            "science_property",
+            "science_connector",
+            "science_target",
+            "science_constraint",
+        ],
+        "generated_academic_body": ["academic_body_modifier", "academic_body_noun"],
+        "generated_logistics_action": ["logistics_tier", "logistics_vector"],
+        "generated_academic_discipline": ["academic_prefix", "academic_subject_structure"],
+        "noun_verbing": ["verbing_base_noun", "verbing_suffix_gerund"],
+    }
+
     def __init__(self, seed: str = "The Larch") -> None:
         if not isinstance(seed, str):
             raise TypeError("seed must be a string")
@@ -38,14 +55,12 @@ class UnifiedFoundationalGenerator:
                 "{{historical_ordinal}} Year {{competition}}: The {{optional_modifier}} Showcase",
                 "A {{unladen_qualifier}} {{optional_nationality}} {{noun_singular}}",
                 "The {{generated_proper_noun}} and {{generated_proper_noun}} {{generated_academic_body}}",
-                "We Apologize for the {{optional_modifier}} {{noun_verbing}} of the {{nons_singular}}",
-                "The {{generated_proper_noun}} and {{generated_proper_noun}} {{generated_academic_body}}",
                 "We Apologize for the {{optional_modifier}} {{noun_verbing}} of the {{noun_singular}}",
                 "The {{geography_sing}} and {{geography_sing}} Cooperative {{enhanced_institution}}",
                 "{{generated_proper_noun}}, Assistant Under-Secretary for {{noun_verbing}}",
                 "A Audition for the Role of the {{optional_modifier}} {{noun_singular}}",
-                "A {{theatrical_format}} Adaptation of the {{noun_verbing}} {{nong_singular}}",
-                "The {{historical_ordinal}} Century Costumed {{theatrical_format}} on {{nong_verbing}}",
+                "A {{theatrical_format}} Adaptation of the {{noun_verbing}} {{noun_singular}}",
+                "The {{historical_ordinal}} Century Costumed {{theatrical_format}} on {{noun_verbing}}",
                 # Modular legal templates (replacing long 6-7 element templates)
                 "{{legal_authority}} {{legal_location}} {{legal_framework}}, {{generated_legal_action}} is {{prohibition}}",
                 "By Order of {{bureaucratic_rank}} {{enhanced_institution}}, {{generated_legal_action}} shall be {{adverb}} {{prohibition}}",
@@ -1156,9 +1171,22 @@ class UnifiedFoundationalGenerator:
             token = match.group(1)
             count += 1
 
+            if token in visited:
+                continue
+
+            visited.add(token)
+
+            # If this token is handled by _resolve() (not directly in grammar),
+            # recurse into its component grammar keys
+            if token in self._RESOLVE_TOKEN_MAP:
+                for grammar_key in self._RESOLVE_TOKEN_MAP[token]:
+                    if grammar_key in self._grammar and grammar_key not in visited:
+                        visited.add(grammar_key)
+                        for option in self._grammar[grammar_key]:
+                            if isinstance(option, str):
+                                count += self._count_total_tokens(option, visited.copy())
             # If this token references a grammar entry that has tokens, count those too
-            if token in self._grammar and token not in visited:
-                visited.add(token)
+            elif token in self._grammar:
                 for option in self._grammar[token]:
                     if isinstance(option, str):
                         count += self._count_total_tokens(option, visited.copy())
@@ -1494,7 +1522,7 @@ class UnifiedFoundationalGenerator:
         if not isinstance(count, int) or count < 1:
             raise ValueError("count must be a positive integer")
 
-        results: set[str | tuple[str, str]] = set()
+        results: list[str | tuple[str, str]] = []
         # Generate extra to account for potential duplicates, but limit attempts
         max_attempts = count * 5  # Reasonable limit to avoid infinite loops
         attempts = 0
@@ -1503,10 +1531,11 @@ class UnifiedFoundationalGenerator:
             result = self.generate(
                 slugify=slugify, complexity=complexity, allow_leading_the=allow_leading_the
             )
-            results.add(result)
+            if result not in results:
+                results.append(result)
             attempts += 1
 
-        return list(results)
+        return results
 
     def get_seed(self) -> str:
         """

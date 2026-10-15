@@ -5,6 +5,7 @@ Command Line Interface for the pythonesque generator.
 
 import argparse
 import csv
+import importlib.metadata
 import json
 import sys
 
@@ -103,7 +104,8 @@ Examples:
         help="Output format: json, csv, or tsv (default: plain text)",
     )
 
-    parser.add_argument("--version", action="version", version="pythonesque 0.1.1")
+    version_str = importlib.metadata.version("pythonesque")
+    parser.add_argument("--version", action="version", version=f"pythonesque {version_str}")
 
     try:
         args = parser.parse_args()

@@ -4,10 +4,10 @@ import subprocess
 import sys
 
 
-def run_cli(*args, input_text=None):
+def run_cli(*args):
     """Run the CLI and return (returncode, stdout, stderr)."""
     cmd = [sys.executable, "-m", "pythonesque"] + list(args)
-    result = subprocess.run(cmd, capture_output=True, text=True, input=input_text)
+    result = subprocess.run(cmd, capture_output=True, text=True)
     return result.returncode, result.stdout, result.stderr
 
 
@@ -113,28 +113,11 @@ class TestCLIErrors:
         assert code != 0
         assert "count must be a positive integer" in stderr
 
-    def test_mutually_exclusive_formats_json_csv(self):
-        """--json and --csv together should error (old flags)."""
-        # The new implementation uses -f/--format, but old flags might still exist
-        # Test with the new -f flag - only one can be specified
-        code, stdout, stderr = run_cli("-f", "json", "-f", "csv")
-        # argparse will catch this as "unrecognized arguments" or similar
-        # Actually, the new implementation only has one -f flag, so this test
-        # would be for the old --json/--csv/--tsv flags which don't exist anymore
-        # Skip this test as the flags have changed
-        pass
-
     def test_invalid_format_choice(self):
         """Invalid format choice should error."""
         code, stdout, stderr = run_cli("-f", "xml")
         assert code != 0
         assert "invalid choice" in stderr.lower()
-
-    def test_non_string_seed_via_cli(self):
-        """CLI always passes string seed, so this is not testable via CLI."""
-        # The CLI uses argparse which always gives strings
-        # TypeError for non-string seed is only testable via direct API
-        pass
 
     def test_empty_seed(self):
         """Empty seed should work (uses default)."""

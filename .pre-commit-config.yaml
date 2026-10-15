@@ -10,7 +10,6 @@ repos:
     hooks:
       - id: mypy
         args: [--strict, --namespace-packages, src/pythonesque]
-        additional_dependencies: [types-requests]
         pass_filenames: false
   - repo: local
     hooks:

@@ -4,10 +4,10 @@ import subprocess
 import sys
 
 
-def run_cli(*args, input_text=None):
+def run_cli(*args):
     """Run the CLI and return (returncode, stdout, stderr)."""
     cmd = [sys.executable, "-m", "pythonesque"] + list(args)
-    result = subprocess.run(cmd, capture_output=True, text=True, input=input_text)
+    result = subprocess.run(cmd, capture_output=True, text=True)
     return result.returncode, result.stdout, result.stderr
 
 
