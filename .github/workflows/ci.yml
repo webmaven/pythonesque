@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: pip install -e .[dev]
+        run: pip install -e .[test]
       - name: Run ruff check
         run: ruff check .
       - name: Run ruff format check
@@ -33,9 +33,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: pip install -e .[dev]
+        run: pip install -e .[test]
       - name: Run mypy
-        run: mypy src/pythonesque
+        run: mypy --strict --namespace-packages src/pythonesque
 
   test:
     name: Test (Python ${{ matrix.python-version }})
@@ -90,6 +90,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: pip install -e .[dev]
+        run: |
+          pip install -e .[test]
+          pip install pre-commit>=3.0
       - name: Run pre-commit
         run: pre-commit run --all-files

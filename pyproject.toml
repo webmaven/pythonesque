@@ -48,10 +48,14 @@ dev = [
   "mypy>=1.11",
   "pre-commit>=3.0",
 ]
-test = ["pytest>=8"]
+test = [
+  "pytest>=8",
+  "ruff>=0.6",
+  "mypy>=1.11",
+]
 
 [dependency-groups]
-test = ["pytest>=8"]
+test = ["pytest>=8", "ruff>=0.6", "mypy>=1.11"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pythonesque"]
